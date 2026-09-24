@@ -8,16 +8,18 @@ import requests
 import streamlit as st
 from firebase_admin import auth
 
-# streamlit-cookies-manager 0.2.0 still declares one internal helper with
-# @st.cache.  Alias only while that module is imported so it is created with
-# Streamlit's current cache implementation, then immediately restore Streamlit.
-_legacy_cache = st.cache
+# streamlit-cookies-manager 0.2.0 expects the old st.cache API.
+# Newer Streamlit versions removed st.cache, so temporarily provide
+# st.cache as an alias to st.cache_data while importing the package.
+
+_original_cache = getattr(st, "cache", None)
 st.cache = st.cache_data
+
 try:
     from streamlit_cookies_manager import EncryptedCookieManager
 finally:
-    st.cache = _legacy_cache
-
+    if _original_cache is not None:
+        st.cache = _original_cache
 
 COOKIE_KEY = "session"
 
