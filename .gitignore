@@ -1,0 +1,10 @@
+.streamlit/secrets.toml
+service-account*.json
+__pycache__/
+.venv/
+.pytest_cache/
+*.py[cod]
+data/*.csv
+!data/.gitkeep
+*.pyc
+.DS_Store
